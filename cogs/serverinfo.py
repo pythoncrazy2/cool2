@@ -18,7 +18,7 @@ async def hastebin(content, session=None):
         else:
             return "Error with creating Hastebin. Status: %s" % resp.status
         
-class Server(commands.Cog()):
+class Server(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
@@ -42,11 +42,12 @@ class Server(commands.Cog()):
                     return self.bot.bot_prefix + 'Could not find server. Note: You must be a member of the server you are trying to search.', False
 
         return server, True
+    
 
     # Stats about server
     @commands.group(aliases=['server', 'sinfo', 'si'], pass_context=True, invoke_without_command=True)
     async def serverinfo(self, ctx, *, msg=""):
-        """Various info about the server. [p]help server for more info."""
+        """Various info about the server. +help server for more info."""
         if ctx.invoked_subcommand is None:
             if msg:
                 server = None
@@ -90,11 +91,9 @@ class Server(commands.Cog()):
                 em.add_field(name='Text Channels', value=str(channel_count))
                 em.add_field(name='Region', value=server.region)
                 em.add_field(name='Verification Level', value=str(server.verification_level))
-                em.add_field(name='Highest role', value=server.role_hierarchy[0])
                 em.add_field(name='Number of roles', value=str(role_count))
                 em.add_field(name='Number of emotes', value=str(emoji_count))
-                url = await hastebin(str(all), self.bot.session)
-                hastebin_of_users = '[List of all {} users in this server]({})'.format(server.member_count, url)
+                hastebin_of_users = '[List of all {} users in this server]()'.format(server.member_count)
                 em.add_field(name='Users', value=hastebin_of_users)
                 em.add_field(name='Created At', value=server.created_at.__format__('%A, %d. %B %Y @ %H:%M:%S'))
                 em.set_thumbnail(url=server.icon_url)
@@ -109,7 +108,7 @@ class Server(commands.Cog()):
 
     @serverinfo.command(pass_context=True)
     async def emojis(self, ctx, msg: str = None):
-        """List all emojis in this server. Ex: [p]server emojis"""
+        """List all emojis in this server. Ex: +server emojis"""
         if msg:
             server, found = self.find_server(msg)
             if not found:
@@ -139,7 +138,7 @@ class Server(commands.Cog()):
 
     @serverinfo.command()
     async def role(self, ctx, msg, guild=None):
-        """Get more info about a specific role. Ex: [p]server role Admins
+        """Get more info about a specific role. Ex: +server role Admins
 
         You need to quote roles with spaces. You may also specify a server to check the role for. Ex. [p]server role "Dev" 299293492645986307"""
         if guild:
@@ -246,7 +245,7 @@ class Server(commands.Cog()):
                 try:
                     invite = await self.bot.get_invite(urlparse(url).path.replace('/', '').replace('<', '').replace('>', ''))
                 except discord.NotFound:
-                    return await ctx.send(self.bot.bot_prefix + "Couldn't find valid invite, please double check the link.")
+                    return await ctx.send("+" + "Couldn't find valid invite, please double check the link.")
                 break
         else:
             async for msg in ctx.message.channel.history():

@@ -172,7 +172,7 @@ def get_random_line():
 for filename in os.listdir('./cogs'):
      if filename.endswith('.py') and filename!="constants.py" and filename!="Nullify.py" and filename!="DisplayName.py" and filename!="checks.py":
         client.load_extension(f'cogs.{filename[:-3]}')
-token = "ODY0OTQzMzc2NjM3NzU1Mzkz.YO8zSg.f7FwDOO_T6lbYX_fciGd9zrD7A8"
+token = "ODY0OTQzMzc2NjM3NzU1Mzkz.YO8zSg.J9DuJGoEAvsKBQX12ZG5b_jNvWA"
 
 @client.event
 async def on_ready() :
