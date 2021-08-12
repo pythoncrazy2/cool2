@@ -1,43 +1,57 @@
-import os
-import discord
-#from keepalive import keep_alive
-import requests
-import json
-import random
-from discord.ext import commands
-client = commands.Bot(command_prefix="yavor")
+import textwrap
+from io import BytesIO
 
-def get_fact():
-  response = requests.get("https://uselessfacts.jsph.pl/random.json?language=en%22")
-  json_data = json.loads(response.text)
-  fact = json_data["text"]
-  return(fact)
+from PIL import Image, ImageDraw, ImageFont, ImageOps, ImageSequence
 
-@client.event
-async def on_ready():
-  print('ok and')
+def caption(fn: str, text: str):
+    old_im = Image.open(fn)
+    ft = old_im.format
+    font = ImageFont.truetype('.//Fonts//One-Regular.ttf', 50)
 
-@client.event
-async def on_message(message):
-  if message.author.id == 720671710264950784:
-    await message.channel.send('danamer')
-    
-    
-    
-@client.command()
-async def fact(ctx):
-    await ctx.send(get_fact())
-    
+    width = 10
+    while True:
+        lines = textwrap.wrap(text, width=width)
+        if (font.getsize(lines[0])[0]) > old_im.size[0]:
+            break
+        width += 4
 
-@client.command(aliases=["hi"])
-async def hello(ctx):
-    mylist = ["Hello!", "Greetings, mortal.", "Hi there!", "Nice to meet you!", "Hey.", "Ahoy!", "‘Ello, gov’nor!"]
-    await message.channel.send(random.choice(mylist))
+    lines = textwrap.wrap(text, width=width - 10)
+    bar_height = (len(lines) + 1) * (font.getsize(lines[0])[1]) + 15
+    print(bar_height)
+    im = ImageOps.expand(
+        old_im,
+        border=(0,int(bar_height),0,0)
+    )
 
-@client.command()
-async def whoami(ctx):
-    await message.channel.send(message.author)
+    frames = []
+    for frame in ImageSequence.Iterator(im):
+        frame = frame.convert('RGB')   
+        draw, y = ImageDraw.Draw(frame), 15
+        for line in lines:
+            w, _ = draw.textsize(line, font=font)
+            draw.text(
+                ((im.size[0] - w) / 2, y),
+                line,
+                font=font,
+                fill='black'
+            )
+            y += 50
 
+        del draw
+        b = BytesIO()
+        frame.save(b, format=ft)
+        frames.append(Image.open(b))
 
-#keep_alive()
-client.run('ODUzODE1NTMwMDgzMDU3NjY0.YMa3rQ.1slIk_BuRjX0XwROW-rzvYQk9OA')
+    frames[0].save(
+        f'out.{ft}',
+        save_all=True,
+        append_images=frames[1:],
+        format=ft,
+        loop=0,
+        optimize=True
+    )
+
+caption(
+    '1984.gif',
+    'asssssssssssssssssssssssssssssssssssssssdsad asdasdasd asd asd asd asd asd'
+)
