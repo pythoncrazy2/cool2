@@ -18,13 +18,13 @@ def caption(fn: str, text: str):
     lines = textwrap.wrap(text, width=width - 10)
     bar_height = (len(lines) + 1) * (font.getsize(lines[0])[1]) + 15
     print(bar_height)
-    im = ImageOps.expand(
-        old_im,
-        border=(0,int(bar_height),0,0)
-    )
 
     frames = []
     for frame in ImageSequence.Iterator(im):
+        frame = ImageOps.expand(
+        frame,
+        border=(0,int(bar_height),0,0)
+    )
         frame = frame.convert('RGB')   
         draw, y = ImageDraw.Draw(frame), 15
         for line in lines:
@@ -53,5 +53,5 @@ def caption(fn: str, text: str):
 
 caption(
     '1984.gif',
-    'asssssssssssssssssssssssssssssssssssssssdsad asdasdasd asd asd asd asd asd'
+    'cdsad s s'
 )

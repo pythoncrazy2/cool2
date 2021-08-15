@@ -475,7 +475,6 @@ async def smugdislike(ctx,listofnames):
 
 
 myLoop.start()
-smugdislike2.start()
 client.run(token)
 
 
