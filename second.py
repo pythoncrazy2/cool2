@@ -5,7 +5,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageOps, ImageSequence
 
 def caption(fn: str, text: str):
     old_im = Image.open(fn)
-    ft = old_im.format
+    ft = "gif"
     font = ImageFont.truetype('.//Fonts//One-Regular.ttf', 50)
 
     width = 10
@@ -20,23 +20,22 @@ def caption(fn: str, text: str):
     print(bar_height)
 
     frames = []
-    for frame in ImageSequence.Iterator(im):
+    for frame in ImageSequence.Iterator(old_im):
         frame = ImageOps.expand(
         frame,
-        border=(0,int(bar_height),0,0)
+        border=(0,int(bar_height),0,0),
+        fill="white"
     )
-        frame = frame.convert('RGB')   
         draw, y = ImageDraw.Draw(frame), 15
         for line in lines:
             w, _ = draw.textsize(line, font=font)
             draw.text(
-                ((im.size[0] - w) / 2, y),
+                ((old_im.size[0] - w) / 2, y),
                 line,
                 font=font,
                 fill='black'
             )
             y += 50
-
         del draw
         b = BytesIO()
         frame.save(b, format=ft)
@@ -48,10 +47,7 @@ def caption(fn: str, text: str):
         append_images=frames[1:],
         format=ft,
         loop=0,
-        optimize=True
     )
 
 caption(
-    '1984.gif',
-    'cdsad s s'
-)
+    '1984.gif',"work dammit")
