@@ -33,7 +33,7 @@ def caption(fn: str, text: str):
                 ((old_im.size[0] - w) / 2, y),
                 line,
                 font=font,
-                fill='black'
+                fill='green'
             )
             y += 50
         del draw
@@ -50,4 +50,4 @@ def caption(fn: str, text: str):
     )
 
 caption(
-    '1984.gif',"work dammit")
+    '1984.gif',"work fucking dammit")

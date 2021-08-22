@@ -463,7 +463,7 @@ def caption(fn: str, text: str):
                 ((old_im.size[0] - w) / 2, y),
                 line,
                 font=font,
-                fill='black'
+                fill='green'
             )
             y += 50
         del draw
@@ -478,6 +478,9 @@ def caption(fn: str, text: str):
         format=ft,
         loop=0,
     )
+
+caption(
+    '1984.gif',"work fucking dammit")
 
 
 g = gt.AsyncTranslator()
@@ -520,12 +523,11 @@ async def smugdislike(ctx,listofnames):
     await ctx.send(random.choice(raffle))
 
 
-@client.command(name="1984")
-async def a1984a(self, ctx, *, message = None):
-    caption(
-    '1984.gif',
-    message
-)
+@client.command(name="1984",pass_context=True)
+async def a1984a(ctx,*,message = None):
+    print(message)
+    caption('1984.gif',message)
+    print("amogus")
     await ctx.send(file=discord.File("out.gif"))
 
 
