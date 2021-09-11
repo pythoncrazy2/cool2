@@ -530,8 +530,8 @@ async def a1984a(ctx,*,message = None):
     print("amogus")
     await ctx.send(file=discord.File("out.gif"))
 
-
-
+import PIL
+print('PIL',PIL.__version__)
 
 myLoop.start()
 client.run(token)

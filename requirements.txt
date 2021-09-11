@@ -1,6 +1,6 @@
 discord.py
 asyncpraw
-pillow
+pillow==6.2.1
 pandas
 opencv-python-headless
 async_google_trans_new
